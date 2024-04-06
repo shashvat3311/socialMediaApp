@@ -353,6 +353,166 @@ const user_message = async (req, res) => {
     }
   }
 };
+
+const getUserFriends=async(req,res)=>{
+    try{
+        const queryString="select * from user_friend where sourceId=?"
+        const{sourceId}=req.body;
+        if(!sourceId){
+            return res.status(400).send({
+                success:false,
+                err:"Please enter sourceID"
+            }) 
+        }
+        db.query(queryString,[sourceId],(err,result)=>{
+            if(err){
+                return res.status(400).send({
+                    success:false,
+                    err:err
+                })
+            }
+            return res.status(200).send({
+                success:true,
+                result:result
+            })
+        })
+    }
+    catch(err){
+        if(err){
+            res.status(500).send({
+                success:false,
+                err:err
+            })
+        }
+    }
+}
+
+const getUserFollower=async(req,res)=>{
+    try{
+        const queryString="select * from user_follower where sourceId=?"
+        const{sourceId}=req.body;
+        if(sourceId){
+            return res.status(400).send({
+                success:false,
+                err:"Please enter and"
+            }) 
+        }
+        db.query(queryString,[sourceId],(err,result)=>{
+            if(err){
+                return res.status(400).send({
+                    success:false,
+                    err:err
+                })
+            }
+            return res.status(200).send({
+                success:true,
+                result:result
+            })
+        })
+    }
+    catch(err){
+        if(err){
+            res.status(500).send({
+                success:false,
+                err:err
+            })
+        }
+    }
+}
+
+const getUserMessages=async(req,res)=>{
+    try{
+        const queryString="select message from user_message where targetId=?"
+        const{}=req.body;
+        if(!targetId){
+            return res.status(400).send({
+                success:false,
+                err:"Please enter targetId"
+            }) 
+        }
+        db.query(queryString,[targetId],(err,result)=>{
+            if(err){
+                return res.status(400).send({
+                    success:false,
+                    err:err
+                })
+            }
+            return res.status(200).send({
+                success:true,
+                result:result
+            })
+        })
+    }
+    catch(err){
+        if(err){
+            res.status(500).send({
+                success:false,
+                err:err
+            })
+        }
+    }
+}
+
+const getuserPost=async(req,res)=>{
+    try{
+        const queryString="select post from user_post where targetId=?"
+        const{targetId}=req.body;
+        if(targetId){
+            return res.status(400).send({
+                success:false,
+                err:"Please enter targetId"
+            }) 
+        }
+        db.query(queryString,[targetId],(err,result)=>{
+            if(err){
+                return res.status(400).send({
+                    success:false,
+                    err:err
+                })
+            }
+            return res.status(200).send({
+                success:true,
+                result:result
+            })
+        })
+    }
+    catch(err){
+        if(err){
+            res.status(500).send({
+                success:false,
+                err:err
+            })
+        }
+    }
+}
+
+const getUsers=async(req,res)=>{
+    try{
+        const queryString="select user_id,firstName,middleName,lasName,userName from user;"
+        
+        db.query(queryString,(err,result)=>{
+            if(err){
+                return res.status(400).send({
+                    success:false,
+                    err:err
+                })
+            }
+            return res.status(200).send({
+                success:true,
+                result:result
+            })
+        })
+    }
+    catch(err){
+        if(err){
+            res.status(500).send({
+                success:false,
+                err:err
+            })
+        }
+    }
+}
+
 module.exports = {
   createUser,
   demoget,
@@ -360,4 +520,10 @@ module.exports = {
   user_friend,
   user_post,
   user_message,
+  getUserFriends,
+  getUserFollower,
+  getUserMessages,
+  getUserFollower,
+  getuserPost,
+  getUsers
 };
