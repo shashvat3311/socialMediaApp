@@ -17,6 +17,7 @@ app.use(bodyParser.json());
 
 // app.use('/group',groupRouter);
 app.use(userRouter)
+app.use(groupRouter)
 
 app.get('/',(req,res)=>{
    db.query('desc user',(err,result)=>{

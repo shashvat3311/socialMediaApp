@@ -15,5 +15,17 @@ router.post('/user_message',userController.user_message)
 
 router.post('/user_follower',userController.user_follower)
 
+router.get('/getUserMessages',userController.getUserMessages)
+
+router.get('/getuserPost',userController.getUserPost)
+
+router.get('/getUserFollower',userController.getUserFollower)
+
+router.get('/getUserFriends',userController.getUserFriends)
+
+router.get('/getUsers',userController.getUsers)
+
+router.get('/demo',validator,userController.demo)
+
 
 module.exports=router

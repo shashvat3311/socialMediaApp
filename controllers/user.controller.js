@@ -453,8 +453,10 @@ const getUserMessages=async(req,res)=>{
     }
 }
 
-const getuserPost=async(req,res)=>{
+const getUserPost=async(req,res)=>{
     try{
+
+        
         const queryString="select post from user_post where targetId=?"
         const{targetId}=req.body;
         if(targetId){
@@ -488,7 +490,8 @@ const getuserPost=async(req,res)=>{
 
 const getUsers=async(req,res)=>{
     try{
-        const queryString="select user_id,firstName,middleName,lasName,userName from user;"
+       
+        const queryString="select user_id,firstName,middleName,lastName,userName from user;"
         
         db.query(queryString,(err,result)=>{
             if(err){
@@ -500,6 +503,7 @@ const getUsers=async(req,res)=>{
             return res.status(200).send({
                 success:true,
                 result:result
+              
             })
         })
     }
@@ -507,11 +511,51 @@ const getUsers=async(req,res)=>{
         if(err){
             res.status(500).send({
                 success:false,
-                err:err
+                err:err.message
             })
         }
     }
 }
+
+function decodeJWT(token){
+  return new Promise((resolve,reject)=>{
+    jwt.verify(token,process.env.TOKEN_SECRET,(err,decoded)=>
+    {
+      if(err){
+        reject(err)
+      }
+      else{
+        resolve(decoded)
+        return decoded;
+      }
+    })
+  })
+}
+
+const demo=async(req,res)=>{
+
+  const auth = req.headers.authorization.split(" ")[1]
+ 
+  const decode = jwt.decode(auth)
+
+  const decoded_Username = decode.data[0].user_id
+
+  const queryString="select * from user where user_id=? "
+
+  db.query(queryString,decoded_Username,(err,result)=>{
+    if(err){
+     return res.status(400).send({
+        success:false,
+        err:err.message
+      })
+    }
+    return res.status(200).send({
+      success:true,
+      result:result
+    })
+  })
+}
+
 
 module.exports = {
   createUser,
@@ -524,6 +568,7 @@ module.exports = {
   getUserFollower,
   getUserMessages,
   getUserFollower,
-  getuserPost,
-  getUsers
+  getUserPost,
+  getUsers,
+  demo
 };
